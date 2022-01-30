@@ -27,42 +27,39 @@ int main(void)
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(5000);
 
-    bind(listenfd, (struct sockaddr*)&serv_addr,sizeof(serv_addr));
+    bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
-    if(listen(listenfd, 10) == -1)
+    if (listen(listenfd, 10) == -1)
     {
         printf("Failed to listen\n");
         return -1;
     }
 
-
-    while(1)
+    while (1)
     {
-        connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL);
+        connfd = accept(listenfd, (struct sockaddr *)NULL, NULL);
 
-        FILE *fp = fopen("sample_file.txt","rb");
-        if(fp==NULL)
+        FILE *fp = fopen("sample_file.txt", "rb");
+        if (fp == NULL)
         {
             printf("File opern error");
-            return 1;   
-        }   
+            return 1;
+        }
 
-        
-        while(1)
+        while (1)
         {
-        
-            unsigned char buff[256]={0};
-            int nread = fread(buff,1,256,fp);
-            printf("Bytes read %d \n", nread);        
+
+            unsigned char buff[256] = {0};
+            int nread = fread(buff, 1, 256, fp);
+            printf("Bytes read %d \n", nread);
 
             /* If read was success, send data. */
-            if(nread > 0)
+            if (nread > 0)
             {
                 printf("Sending \n");
                 write(connfd, buff, nread);
             }
 
-            
             if (nread < 256)
             {
                 if (feof(fp))
@@ -71,15 +68,11 @@ int main(void)
                     printf("Error reading\n");
                 break;
             }
-
-
         }
 
         close(connfd);
         sleep(1);
     }
 
-
     return 0;
 }
-

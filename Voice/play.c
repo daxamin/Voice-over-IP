@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdio.lib>
 
-void main(){
+void main()
+{
 
 	printf("Playing the voice note");
 

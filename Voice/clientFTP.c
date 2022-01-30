@@ -18,48 +18,40 @@ int main(void)
     memset(recvBuff, '0', sizeof(recvBuff));
     struct sockaddr_in serv_addr;
 
-    
-    if((sockfd = socket(AF_INET, SOCK_STREAM, 0))< 0)
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         printf("\n Error : Could not create socket \n");
         return 1;
     }
 
-    
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(5000); // port
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    
-    if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr))<0)
+    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
         printf("\n Error : Connect Failed \n");
         return 1;
     }
 
-    
     FILE *fp;
-    fp = fopen("sample_file.txt", "ab"); 
-    if(NULL == fp)
+    fp = fopen("sample_file.txt", "ab");
+    if (NULL == fp)
     {
         printf("Error opening file");
         return 1;
     }
 
-    
-    while((bytesReceived = read(sockfd, recvBuff, 256)) > 0)
+    while ((bytesReceived = read(sockfd, recvBuff, 256)) > 0)
     {
-        printf("Bytes received %d\n",bytesReceived);    
-           fwrite(recvBuff, 1,bytesReceived,fp);
-    
+        printf("Bytes received %d\n", bytesReceived);
+        fwrite(recvBuff, 1, bytesReceived, fp);
     }
 
-    if(bytesReceived < 0)
+    if (bytesReceived < 0)
     {
         printf("\n Read Error \n");
     }
 
-
     return 0;
 }
-
